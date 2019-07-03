@@ -1,12 +1,26 @@
 'use strict';
 
 const ioHook = require('../index.js');
+let grabKeys = false;
 
 ioHook.on("mousedown",function(msg){console.log(msg);});
 
-ioHook.on("keypress",function(msg){console.log(msg);});
+ioHook.on("keypress",function(msg){
+  console.log(msg);});
 
-ioHook.on("keydown",function(msg){console.log(msg);});
+ioHook.on("keydown",function(msg){
+  if (msg.ctrlKey && msg.altKey && msg.keycode == 24) {
+    console.log('ctrl + alt + o!');
+    grabKeys = !grabKeys;
+    if (grabKeys) {
+      ioHook.disableKeyPropagation();
+    } else {
+      ioHook.enableKeyPropagation();
+    }
+    console.log('grabKeys: ', grabKeys);
+  }
+  
+  console.log(msg);});
 
 ioHook.on("keyup",function(msg){console.log(msg);});
 
@@ -21,6 +35,7 @@ ioHook.on("mousedrag",function(msg){console.log(msg)});
 //start ioHook
 ioHook.start();
 // ioHook.setDebug(true); // Uncomment this line for see all debug information from iohook
+// ioHook.disableClickPropagation();
 
 const CTRL = 29;
 const ALT = 56;
