@@ -28,7 +28,7 @@ function install(runtime, abi, platform, arch, cb) {
   const currentPlatform = pkg.name + '-v' + pkgVersion + '-' + essential;
 
   console.log('Downloading prebuild for platform:', currentPlatform);
-  let downloadUrl = 'https://github.com/WilixLead/iohook/releases/download/v' + pkgVersion + '/' + currentPlatform + '.tar.gz';
+  let downloadUrl = 'https://github.com/theicfire/iohook/releases/download/v' + pkgVersion + '/' + currentPlatform + '.tar.gz';
 
   let reqOpts = {url: downloadUrl};
   let tempFile = path.join(os.tmpdir(), 'prebuild.tar.gz');
