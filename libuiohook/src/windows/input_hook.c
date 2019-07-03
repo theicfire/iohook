@@ -51,6 +51,7 @@ static uiohook_event event;
 static dispatcher_t dispatcher = NULL;
 
 static unsigned short int grab_mouse_click_event = 0x00;
+static unsigned short int grab_key_press_event = 0x00;
 
 UIOHOOK_API void hook_set_dispatch_proc(dispatcher_t dispatch_proc) {
 	logger(LOG_LEVEL_DEBUG,	"%s [%u]: Setting new dispatch callback to %#p.\n",
@@ -216,7 +217,7 @@ static void process_key_pressed(KBDLLHOOKSTRUCT *kbhook) {
 
 	// Populate key pressed event.
 	event.time = kbhook->time;
-	event.reserved = 0x00;
+	event.reserved = grab_key_press_event;
 
 	event.type = EVENT_KEY_PRESSED;
 	event.mask = get_modifiers();
@@ -241,7 +242,7 @@ static void process_key_pressed(KBDLLHOOKSTRUCT *kbhook) {
 		for (unsigned int i = 0; i < count; i++) {
 			// Populate key typed event.
 			event.time = kbhook->time;
-			event.reserved = 0x00;
+			event.reserved = grab_key_press_event;
 
 			event.type = EVENT_KEY_TYPED;
 			event.mask = get_modifiers();
@@ -275,7 +276,7 @@ static void process_key_released(KBDLLHOOKSTRUCT *kbhook) {
 
 	// Populate key pressed event.
 	event.time = kbhook->time;
-	event.reserved = 0x00;
+	event.reserved = grab_key_press_event;
 
 	event.type = EVENT_KEY_RELEASED;
 	event.mask = get_modifiers();
@@ -674,6 +675,14 @@ UIOHOOK_API void grab_mouse_click(bool enabled) {
 		grab_mouse_click_event = 0x01;
 	} else {
 		grab_mouse_click_event = 0x00;
+	}
+}
+
+UIOHOOK_API void grab_key_press(bool enabled) {
+	if (enabled) {
+		grab_key_press_event = 0x01;
+	} else {
+		grab_key_press_event = 0x00;
 	}
 }
 
