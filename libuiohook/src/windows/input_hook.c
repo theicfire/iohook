@@ -494,7 +494,8 @@ static void process_mouse_wheel(MSLLHOOKSTRUCT *mshook, uint8_t direction) {
 	 * forward, away from the user; a negative value indicates that
 	 * the wheel was rotated backward, toward the user. One wheel
 	 * click is defined as WHEEL_DELTA, which is 120. */
-	event.data.wheel.rotation = ((int16_t) HIWORD(mshook->mouseData) / WHEEL_DELTA) * -1;
+	bool down = (short)HIWORD(mshook->mouseData) < 0;
+  	event.data.wheel.rotation = (down) ? 1 : -1;
 
 	// Set the direction based on what event was received.
 	event.data.wheel.direction = direction;
